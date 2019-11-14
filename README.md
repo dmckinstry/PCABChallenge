@@ -2,4 +2,4 @@
 
 This repo contains the source code for the DevOps Challenge.
 
-Verify repo setup again.
+Verify repo setup yet again.
