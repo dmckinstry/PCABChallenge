@@ -1,0 +1,23 @@
+name: Continuous Integration
+on:
+  pull_request
+    
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    # checkout the repo
+    - uses: actions/checkout@master
+    
+    # install dependencies, build, and test
+    - name: Setup Node 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x' # Replace with specific Node version : 8.x, 10.x, 12.x
+
+    - name: npm install, build, and test
+      run: |
+        npm install
+        npm run build
+        npm run unit-test
