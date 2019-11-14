@@ -1,0 +1,37 @@
+name: Continuous Deployment
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    # checkout the repo
+    - uses: actions/checkout@master
+    
+    # install dependencies, build, and test
+    - name: Setup Node 10.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: '10.x' # Replace with specific Node version : 8.x, 10.x, 12.x
+
+    - name: npm install, build, and test
+      run: |
+        npm install --production
+        npm run build
+
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: 'Run Azure webapp deploy action using publish profile credentials'
+      uses: azure/webapps-deploy@v1
+      with: 
+        app-name: davepfx1234-web-dev
+
+
+
+ 
