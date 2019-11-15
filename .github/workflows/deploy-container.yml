@@ -1,0 +1,40 @@
+name: Continuous Deployment (container)
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-container:
+    runs-on: ubuntu-latest
+
+    steps:
+    # checkout the repo
+    - uses: actions/checkout@master
+
+    - uses: azure/docker-login@v1
+      with:
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - name: Build and publish Docker image
+      run: |
+        docker build . -t dmckinstry/contosoair:${{ github.sha }}
+        docker build . -t dmckinstry/contosoair:latest
+        docker push dmckinstry/contosoair:latest
+        docker push dmckinstry/contosoair:${{ github.sha }}
+  
+  deploy-container:
+    needs: [publish-container]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+      
+    - uses: azure/webapps-container-deploy@v1
+      with:
+        app-name: contosoair-container
+        images: 'dmckinstry/contosoair:${{ github.sha }}'
+        
