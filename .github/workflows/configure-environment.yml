@@ -1,0 +1,26 @@
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'config/*'
+      - '.github/workflows/configure-environment.yml'
+
+name: Configure Environment
+jobs:
+  prepare-environment:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+      
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Create resource group using AZ CLI
+      run: |
+        az group create --name 'mySampleRG' --location 'westus'
+
+    - name: Deploy ARM Template using AZ CLI
+      run: |
+        az group deployment create --resource-group 'mySampleRG' --template-file config/azuredeploy.json --parameters @config/azuredeploy.parameters.json --parameters p_site_prefix=davepfx1234
