@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Trigger pipelins deployment'
-        uses: Azure/pipelines@release/v1
+        uses: Azure/pipelines@releases/v1
         with:
           azure-devops-project-url: 'https://dev.azure.com/regius/PartsUnlimited'
           azure-pipeline-name: 'PartsUnlimitedActions' 
