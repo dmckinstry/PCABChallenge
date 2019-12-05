@@ -26,7 +26,7 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
-      - name: 'Trigger pipelins deployment'
+      - name: 'Trigger pipelins deployment.'
         uses: Azure/pipelines@releases/v1
         with:
           azure-devops-project-url: 'https://dev.azure.com/regius/PartsUnlimited'
