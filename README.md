@@ -4,4 +4,4 @@
 
 This repo contains the source code for the DevOps Challenge.
 
-Verify repo and boards integration.
+Verify repo and boards integration...
